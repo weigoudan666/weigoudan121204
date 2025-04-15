@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我的世界主播官方网站</title>
+    <meta name="description" content="探索《我的世界》无限创造可能，获取最新游戏视频、实用模组资源和创意玩法教程">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#55C55A',
+                        secondary: '#3D8A40'
+                    },
+                    borderRadius: {
+                        'none': '0px',
+                        'sm': '4px',
+                        DEFAULT: '8px',
+                        'md': '12px',
+                        'lg': '16px',
+                        'xl': '20px',
+                        '2xl': '24px',
+                        '3xl': '32px',
+                        'full': '9999px',
+                        'button': '8px'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* 修复Remix Icon显示问题 */
+        :where([class^="ri-"])::before { content: "\f3c2"; }
+        
+        /* Minecraft字体 */
+        @font-face {
+            font-family: 'Minecraft';
+            src: url('https://db.onlinewebfonts.com/t/b2e75c336df191233b3096682c9ee6be.eot');
+            src: url('https://db.onlinewebfonts.com/t/b2e75c336df191233b3096682c9ee6be.eot?#iefix') format('embedded-opentype'),
+                url('https://db.onlinewebfonts.com/t/b2e75c336df191233b3096682c9ee6be.woff2') format('woff2'),
+                url('https://db.onlinewebfonts.com/t/b2e75c336df191233b3096682c9ee6be.woff') format('woff');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+        }
+        
+        .font-minecraft {
+            font-family: 'Minecraft', sans-serif;
+        }
+        
+        /* 像素边框 */
+        .pixel-border {
+            box-shadow: 0 0 0 2px #000000,
+                        inset 0 0 0 1px #000000;
+            image-rendering: pixelated;
+        }
+        
+        /* Minecraft风格按钮 */
+        .minecraft-btn {
+            background-color: #727272;
+            border: 2px solid #000;
+            box-shadow: inset -2px -4px 0 0 rgba(0,0,0,0.3),
+                        inset 2px 2px 0 0 rgba(255,255,255,0.5);
+            image-rendering: pixelated;
+            transition: all 0.1s;
+        }
+        
+        .minecraft-btn:hover {
+            background-color: #8b8b8b;
+        }
+        
+        .minecraft-btn:active {
+            box-shadow: inset 2px 4px 0 0 rgba(0,0,0,0.3),
+                        inset -2px -2px 0 0 rgba(255,255,255,0.5);
+        }
+        
+        /* 箱子容器 */
+        .chest-container {
+            background-color: #8b6344;
+            border: 4px solid #3a2d1c;
+            box-shadow: inset 0 0 0 2px rgba(255,255,255,0.2);
+        }
+        
+        /* 浮动动画 */
+        .floating {
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        /* 红石脉冲动画 */
+        .redstone-pulse {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 0.6; }
+            50% { opacity: 1; }
+            100% { opacity: 0.6; }
+        }
+        
+        /* 自定义复选框 */
+        input[type="checkbox"] {
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border: 2px solid #000;
+            background-color: #727272;
+            box-shadow: inset -2px -2px 0 0 rgba(0,0,0,0.3),
+                        inset 2px 2px 0 0 rgba(255,255,255,0.5);
+            position: relative;
+            cursor: pointer;
+        }
+        
+        input[type="checkbox"]:checked::after {
+            content: "";
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 12px;
+            height: 12px;
+            background-color: #55C55A;
+        }
+        
+        /* 自定义开关 */
+        .custom-switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+        }
+        
+        .custom-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .switch-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #727272;
+            border: 2px solid #000;
+            transition: .4s;
+            box-shadow: inset -2px -2px 0 0 rgba(0,0,0,0.3),
+                        inset 2px 2px 0 0 rgba(255,255,255,0.5);
+        }
+        
+        .switch-slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 2px;
+            bottom: 2px;
+            background-color: #fff;
+            transition: .4s;
+            border: 1px solid #000;
+        }
+        
+        input:checked + .switch-slider {
+            background-color: #55C55A;
+        }
+        
+        input:checked + .switch-slider:before {
+            transform: translateX(26px);
+        }
+        
+        /* 自定义下拉菜单 */
+        .custom-select {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .custom-select select {
+            display: none;
+        }
+        
+        .select-selected {
+            background-color: #727272;
+            border: 2px solid #000;
+            box-shadow: inset -2px -4px 0 0 rgba(0,0,0,0.3),
+                        inset 2px 2px 0 0 rgba(255,255,255,0.5);
+        }
+        
+        .select-items div {
+            padding: 8px 16px;
+            border-bottom: 1px solid #000;
+            cursor: pointer;
+        }
+        
+        .select-items {
+            position: absolute;
+            background-color: #727272;
+            top: 100%;
+            left: 0;
+            right: 0;
+            z-index: 99;
+            border: 2px solid #000;
+            border-top: none;
+        }
+        
+        .select-hide {
+            display: none;
+        }
+        
+        .select-items div:hover {
+            background-color: #8b8b8b;
+        }
+    </style>
+</head>
+<body class="bg-[#f5f5f5] font-minecraft">
+    <!-- 导航栏 -->
+    <nav class="bg-primary border-b-4 border-black sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <a href="#" class="flex-shrink-0 flex items-center">
+                        <span class="font-['Pacifico'] text-2xl text-white">logo</span>
+                    </a>
+                    <div class="hidden md:ml-6 md:flex md:space-x-8">
+                        <a href="#" class="minecraft-btn !rounded-button whitespace-nowrap text-white px-4 py-2 font-bold">首页</a>
+                        <a href="#resources" class="minecraft-btn !rounded-button whitespace-nowrap text-white px-4 py-2 font-bold">资源下载</a>
+                        <a href="#social-media" class="minecraft-btn !rounded-button whitespace-nowrap text-white px-4 py-2 font-bold">社交媒体</a>
+                    </div>
+                </div>
+                <div class="flex items-center">
+                    <div class="flex items-center space-x-4">
+                        <button class="minecraft-btn !rounded-button whitespace-nowrap text-white px-4 py-2 font-bold flex items-center">
+                            <span class="w-6 h-6 flex items-center justify-center mr-2">
+                                <i class="ri-global-line"></i>
+                            </span>
+                            中 / EN
+                        </button>
+                        <button class="minecraft-btn !rounded-button whitespace-nowrap text-white px-4 py-2 font-bold">登录</button>
+                    </div>
+                    <div class="md:hidden ml-4">
+                        <button class="minecraft-btn !rounded-button whitespace-nowrap text-white p-2" aria-label="菜单">
+                            <span class="w-6 h-6 flex items-center justify-center">
+                                <i class="ri-menu-line"></i>
+                            </span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 移动端菜单 -->
+        <div class="hidden md:hidden bg-primary border-t-2 border-black">
+            <div class="px-2 pt-2 pb-3 space-y-1">
+                <a href="#" class="minecraft-btn !rounded-button whitespace-nowrap text-white block px-3 py-2 text-base font-bold">首页</a>
+                <a href="#resources" class="minecraft-btn !rounded-button whitespace-nowrap text-white block px-3 py-2 text-base font-bold">资源下载</a>
+                <a href="#social-media" class="minecraft-btn !rounded-button whitespace-nowrap text-white block px-3 py-2 text-base font-bold">社交媒体</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero 区域 -->
+    <div class="relative w-full" style="background-image: url('https://readdy.ai/api/search-image?query=Minecraft%20landscape%20with%20grass%20blocks%2C%20mountains%2C%20trees%2C%20and%20a%20beautiful%20sunset.%20The%20image%20has%20a%20pixelated%20aesthetic%20with%20vibrant%20colors%2C%20featuring%20green%20grass%20blocks%20on%20the%20left%20side%20transitioning%20to%20a%20scenic%20view%20on%20the%20right.%20The%20lighting%20creates%20a%20warm%2C%20inviting%20atmosphere%20perfect%20for%20a%20gaming%20website.&width=1920&height=600&seq=1234&orientation=landscape'); background-size: cover; background-position: center;">
+        <div class="absolute inset-0 bg-black bg-opacity-40"></div>
+        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 md:py-32 flex flex-col md:flex-row items-center">
+            <div class="md:w-1/2 text-center md:text-left mb-12 md:mb-0">
+                <h1 class="text-4xl md:text-5xl font-bold text-white mb-6 leading-tight">探索《我的世界》<br>无限创造可能</h1>
+                <p class="text-xl text-white mb-8 max-w-lg">欢迎来到我的 Minecraft 世界！这里有最新的游戏视频、实用模组资源和创意玩法教程，一起开启方块冒险之旅！</p>
+                <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4 justify-center md:justify-start">
+                    <a href="#social-media" class="minecraft-btn !rounded-button whitespace-nowrap bg-primary hover:bg-primary/90 text-white px-8 py-3 text-lg font-bold">关注我的频道</a>
+                    <a href="#resources" class="minecraft-btn !rounded-button whitespace-nowrap bg-white hover:bg-gray-100 text-gray-900 px-8 py-3 text-lg font-bold">下载游戏资源</a>
+                </div>
+            </div>
+            <div class="md:w-1/2 flex justify-center">
+                <div class="relative w-64 h-64 md:w-80 md:h-80">
+                    <img src="https://static.readdy.ai/image/3167b22f6e8e9be6e9c3f3be3566a17d/a775c0daf72f99aff7bc79685d5e4e5c.webp" alt="主播形象" class="w-full h-full object-contain floating">
+                    <div class="absolute -bottom-4 -right-4 w-24 h-24 redstone-pulse">
+                        <img src="https://static.readdy.ai/image/3167b22f6e8e9be6e9c3f3be3566a17d/6808f3e39df6d5a1d77e384e32820126.png" alt="红石效果" class="w-full h-full object-contain">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 精选抖音视频 -->
+    <section class="py-16 bg-[#f5f5f5]">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold mb-4">精选抖音视频</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">观看我的最新Minecraft创作视频，获取游戏灵感和技巧！</p>
+            </div>
+            
+            <div class="pixel-border bg-white p-6">
+                <div class="aspect-w-16 aspect-h-9">
+                    <iframe 
+                        src="https://www.douyin.com/user/self?from_tab_name=main&modal_id=7490000901399121186" 
+                        frameborder="0" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                        allowfullscreen
+                        class="w-full h-[500px]"
+                        title="抖音视频">
+                    </iframe>
+                </div>
+                <div class="mt-4 text-center">
+                    <a href="https://www.douyin.com/user/self?from_tab_name=main" target="_blank" rel="noopener" class="minecraft-btn !rounded-button whitespace-nowrap bg-primary text-white px-8 py-3 text-lg font-bold hover:bg-primary/90 transition-colors">查看更多抖音视频</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 社交媒体平台 -->
+    <section id="social-media" class="py-16 bg-[#f0f0f0]">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold mb-4">关注我的社交媒体</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">在各大平台关注我，获取最新Minecraft视频、教程和游戏资讯！</p>
+            </div>
+            
+            <!-- 社交媒体平台卡片 -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- 抖音 -->
+                <div class="pixel-border bg-white overflow-hidden transform transition-transform hover:scale-[1.02]">
+                    <div class="relative">
+                        <img src="https://readdy.ai/api/search-image?query=Douyin%20app%20interface%20showing%20Minecraft%20content.%20The%20image%20displays%20the%20Douyin%20logo%20and%20interface%20with%20Minecraft%20gaming%20videos%20visible.&width=400&height=225&seq=1357&orientation=landscape" alt="抖音平台" class="w-full h-48 object-cover object-top">
+                        <div class="absolute top-2 left-2 bg-[#FF0000] text-white px-2 py-1 text-sm font-bold !rounded-button">抖音</div>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="text-lg font-bold mb-2">抖音 - 短视频平台</h3>
+                        <p class="text-gray-600 text-sm mb-4">关注我的抖音账号，观看精彩的Minecraft短视频内容，包括建筑技巧、红石教程和生存挑战。</p>
+                        <div class="flex items-center text-gray-500 text-sm mb-4">
+                            <span class="flex items-center mr-4">
+                                <i class="ri-video-line mr-1"></i> 短视频
+                            </span>
+                            <span class="flex items-center">
+                                <i class="ri-time-line mr-1"></i> 每日更新
+                            </span>
+                        </div>
+                        <a href="https://www.douyin.com/user/self?from_tab_name=main" target="_blank" rel="noopener" class="minecraft-btn !rounded-button whitespace-nowrap bg-primary text-white px-4 py-2 font-bold w-full text-center block">关注抖音</a>
+                    </div>
+                </div>
+                
+                <!-- 哔哩哔哩 -->
+                <div class="pixel-border bg-white overflow-hidden transform transition-transform hover:scale-[1.02]">
+                    <div class="relative">
+                        <img src="https://readdy.ai/api/search-image?query=Bilibili%20app%20interface%20showing%20Minecraft%20content.%20The%20image%20displays%20the%20Bilibili%20logo%20and%20interface%20with%20Minecraft%20gaming%20videos%20visible.&width=400&height=225&seq=2468&orientation=landscape" alt="哔哩哔哩平台" class="w-full h-48 object-cover object-top">
+                        <div class="absolute top-2 left-2 bg-[#00A1D6] text-white px-2 py-1 text-sm font-bold !rounded-button">哔哩哔哩</div>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="text-lg font-bold mb-2">哔哩哔哩 - 长视频平台</h3>
+                        <p class="text-gray-600 text-sm mb-4">在B站关注我，观看更加详细的Minecraft教程、游戏实况和大型建筑项目展示。</p>
+                        <div class="flex items-center text-gray-500 text-sm mb-4">
+                            <span class="flex items-center mr-4">
+                                <i class="ri-movie-line mr-1"></i> 长视频
+                            </span>
+                            <span class="flex items-center">
+                                <i class="ri-calendar-line mr-1"></i> 每周更新
+                            </span>
+                        </div>
+                        <a href="https://space.bilibili.com/3546659195718098?spm_id_from=333.1007.0.0" target="_blank" rel="noopener" class="minecraft-btn !rounded-button whitespace-nowrap bg-primary text-white px-4 py-2 font-bold w-full text-center block">关注哔哩哔哩</a>
+                    </div>
+                </div>
+                
+                <!-- 小红书 -->
+                <div class="pixel-border bg-white overflow-hidden transform transition-transform hover:scale-[1.02]">
+                    <div class="relative">
+                        <img src="https://readdy.ai/api/search-image?query=Xiaohongshu%20app%20interface%20showing%20Minecraft%20content.%20The%20image%20displays%20the%20Xiaohongshu%20logo%20and%20interface%20with%20Minecraft%20gaming%20posts%20visible.&width=400&height=225&seq=3579&orientation=landscape" alt="小红书平台" class="w-full h-48 object-cover object-top">
+                        <div class="absolute top-2 left-2 bg-[#FE2C55] text-white px-2 py-1 text-sm font-bold !rounded-button">小红书</div>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="text-lg font-bold mb-2">小红书 - 图文平台</h3>
+                        <p class="text-gray-600 text-sm mb-4">在小红书关注我，获取精美的Minecraft建筑灵感、装饰技巧和游戏心得分享。</p>
+                        <div class="flex items-center text-gray-500 text-sm mb-4">
+                            <span class="flex items-center mr-4">
+                                <i class="ri-image-line mr-1"></i> 图文内容
+                            </span>
+                            <span class="flex items-center">
+                                <i class="ri-book-open-line mr-1"></i> 创意分享
+                            </span>
+                        </div>
+                        <a href="https://www.xiaohongshu.com/user/profile/669e5109000000001b039c0c" target="_blank" rel="noopener" class="minecraft-btn !rounded-button whitespace-nowrap bg-primary text-white px-4 py-2 font-bold w-full text-center block">关注小红书</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 资源下载中心 -->
+    <section id="resources" class="py-16 bg-[#f5f5f5]">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold mb-4">资源下载中心</h2>
+                <p class="text-gray-600 max-w-2xl mx-auto">精选优质 Minecraft 模组、地图与材质包，让你的游戏体验更加丰富多彩！</p>
+            </div>
+            
+            <!-- 资源网格 -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Modrinth 入口 -->
+                <div class="pixel-border bg-white overflow-hidden transform transition-transform hover:scale-[1.02]">
+                    <div class="relative">
+                        <img src="https://readdy.ai/api/search-image?query=Modrinth%20website%20logo%20and%20interface%20for%20Minecraft%20mods.%20The%20image%20shows%20the%20Modrinth%20logo%20and%20a%20glimpse%20of%20its%20modern%2C%20clean%20user%20interface%20displaying%20various%20Minecraft%20mods.&width=400&height=225&seq=4680&orientation=landscape" alt="Modrinth 预览" class="w-full h-48 object-cover object-top">
+                        <div class="absolute top-2 left-2 bg-blue-500 text-white px-2 py-1 text-sm font-bold !rounded-button">模组平台</div>
+                    </div>
+                    <div class="p-4">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="text-lg font-bold">Modrinth</h3>
+                        </div>
+                        <p class="text-gray-600 text-sm mb-4">开源的 Minecraft 模组平台，提供高质量的模组、资源包和数据包，界面简洁，下载速度快。</p>
+                        <div class="flex items-center text-gray-500 text-sm mb-4">
+                            <span class="flex items-center mr-4">
+                                <i class="ri-download-line mr-1"></i> 快速下载
+                            </span>
+                            <span class="flex items-center">
+                                <i class="ri-shield-check-line mr-1"></i> 安全可靠
+                            </span>
+                        </div>
+                        <a href="https://modrinth.com/" target="_blank" rel="noopener" class="minecraft-btn !rounded-button whitespace-nowrap bg-primary text-white px-4 py-2 font-bold w-full text-center block hover:bg-primary/90 transition-colors">访问 Modrinth</a>
+                    </div>
+                </div>
+                
+                <!-- CurseForge 入口 -->
+                <div class="pixel-border bg-white overflow-hidden transform transition-transform hover:scale-[1.02]">
+                    <div class="relative">
+                        <img src="https://readdy.ai/api/search-image?query=CurseForge%20website%20logo%20and%20interface%20for%20Minecraft%20mods.%20The%20image%20shows%20the%20CurseForge%20logo%20and%20a%20glimpse%20of%20its%20user%20interface%20displaying%20various%20Minecraft%20mods%20and%20resources.&width=400&height=225&seq=5791&orientation=landscape" alt="CurseForge 预览" class="w-full h-48 object-cover object-top">
+                        <div class="absolute top-2 left-2 bg-green-500 text-white px-2 py-1 text-sm font-bold !rounded-button">综合平台</div>
+                    </div>
+                    <div class="p-4">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="text-lg font-bold">CurseForge</h3>
+                        </div>
+                        <p class="text-gray-600 text-sm mb-4">最大的 Minecraft 模组平台之一，拥有海量模组、整合包、资源包、地图和插件资源。</p>
+                        <div class="flex items-center text-gray-500 text-sm mb-4">
+                            <span class="flex items-center mr-4">
+                                <i class="ri-apps-line mr-1"></i> 资源丰富
+                            </span>
+                            <span class="flex items-center">
+                                <i class="ri-user-star-line mr-1"></i> 社区活跃
+                            </span>
+                        </div>
+                        <a href="https://www.curseforge.com/minecraft" target="_blank" rel="noopener" class="minecraft-btn !rounded-button whitespace-nowrap bg-primary text-white px-4 py-2 font-bold w-full text-center block hover:bg-primary/90 transition-colors">访问 CurseForge</a>
+                    </div>
+                </div>
+                
+                <!-- MCNAV 入口 -->
+                <div class="pixel-border bg-white overflow-hidden transform transition-transform hover:scale-[1.02]">
+                    <div class="relative">
+                        <img src="https://readdy.ai/api/search-image?query=Chinese%20Minecraft%20resource%20website%20interface%20showing%20various%20Minecraft%20mods%20and%20resources%20with%20Chinese%20text.%20The%20image%20shows%20a%20clean%20interface%20with%20categorized%20Minecraft%20content%20in%20Chinese%20language.&width=400&height=225&seq=6802&orientation=landscape" alt="MCNAV 预览" class="w-full h-48 object-cover object-top">
+                        <div class="absolute top-2 left-2 bg-purple-500 text-white px-2 py-1 text-sm font-bold !rounded-button">中文资源</div>
+                    </div>
+                    <div class="p-4">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="text-lg font-bold">MCNAV</h3>
+                        </div>
+                        <p class="text-gray-600 text-sm mb-4">中文我的世界资源导航网站，提供汉化模组、中文教程和本地化资源，适合中国玩家使用。</p>
+                        <div class="flex items-center text-gray-500 text-sm mb-4">
+                            <span class="flex items-center mr-4">
+                                <i class="ri-translate-2 mr-1"></i> 中文资源
+                            </span>
+                            <span class="flex items-center">
+                                <i class="ri-map-pin-line mr-1"></i> 本地化支持
+                            </span>
+                        </div>
+                        <a href="https://www.mcnav.net/" target="_blank" rel="noopener" class="minecraft-btn !rounded-button whitespace-nowrap bg-primary text-white px-4 py-2 font-bold w-full text-center block hover:bg-primary/90 transition-colors">访问 MCNAV</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 页脚 -->
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div>
+                    <a href="#" class="flex items-center mb-4">
+                        <span class="font-['Pacifico'] text-2xl text-white">logo</span>
+                    </a>
+                    <p class="text-gray-400 mb-4">探索无限创造的方块世界，分享精彩游戏体验！</p>
+                    <div class="flex space-x-4">
+                        <a href="https://www.douyin.com/user/self?from_tab_name=main" target="_blank" rel="noopener" class="text-gray-400 hover:text-white" aria-label="抖音">
+                            <span class="w-6 h-6 flex items-center justify-center">
+                                <i class="ri-tiktok-fill"></i>
+                            </span>
+                        </a>
+                        <a href="https://space.bilibili.com/3546659195718098?spm_id_from=333.1007.0.0" target="_blank" rel="noopener" class="text-gray-400 hover:text-white" aria-label="哔哩哔哩">
+                            <span class="w-6 h-6 flex items-center justify-center">
+                                <i class="ri-bilibili-fill"></i>
+                            </span>
+                        </a>
+                        <a href="https://www.xiaohongshu.com/user/profile/669e5109000000001b039c0c" target="_blank" rel="noopener" class="text-gray-400 hover:text-white" aria-label="小红书">
+                            <span class="w-6 h-6 flex items-center justify-center">
+                                <i class="ri-book-open-fill"></i>
+                            </span>
+                        </a>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold mb-4">快速链接</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-400 hover:text-white">首页</a></li>
+                        <li><a href="#social-media" class="text-gray-400 hover:text-white">社交媒体</a></li>
+                        <li><a href="#resources" class="text-gray-400 hover:text-white">资源下载</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-bold mb-4">联系方式</h3>
+                    <ul class="space-y-2">
+                        <li class="flex items-center">
+                            <span class="w-5 h-5 flex items-center justify-center mr-2 text-gray-400">
+                                <i class="ri-mail-line"></i>
+                            </span>
+                            <a href="mailto:weihan121204@163.com" class="text-gray-400 hover:text-white">weihan121204@163.com</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
+                <p class="text-gray-400 text-sm mb-4 md:mb-0">© 2025 我的世界主播官网. 保留所有权利.</p>
+                <div class="flex space-x-6">
+                    <a href="#" class="text-gray-400 hover:text-white text-sm">隐私政策</a>
+                    <a href="#" class="text-gray-400 hover:text-white text-sm">使用条款</a>
+                    <a href="#" class="text-gray-400 hover:text-white text-sm">Cookie 设置</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- 悬浮社交媒体栏 -->
+    <div class="fixed right-0 top-1/2 transform -translate-y-1/2 z-40">
+        <div class="flex flex-col space-y-2">
+            <a href="https://www.douyin.com/user/self?from_tab_name=main" target="_blank" rel="noopener" aria-label="抖音" class="minecraft-btn !rounded-l-button !rounded-r-none whitespace-nowrap bg-black hover:bg-gray-800 text-white p-3 w-12 h-12 flex items-center justify-center">
+                <span class="w-6 h-6 flex items-center justify-center">
+                    <i class="ri-tiktok-fill ri-lg"></i>
+                </span>
+            </a>
+            <a href="https://space.bilibili.com/3546659195718098?spm_id_from=333.1007.0.0" target="_blank" rel="noopener" aria-label="哔哩哔哩" class="minecraft-btn !rounded-l-button !rounded-r-none whitespace-nowrap bg-[#00A1D6] hover:bg-[#00A1D6]/90 text-white p-3 w-12 h-12 flex items-center justify-center">
+                <span class="w-6 h-6 flex items-center justify-center">
+                    <i class="ri-bilibili-fill ri-lg"></i>
+                </span>
+            </a>
+            <a href="https://www.xiaohongshu.com/user/profile/669e5109000000001b039c0c" target="_blank" rel="noopener" aria-label="小红书" class="minecraft-btn !rounded-l-button !rounded-r-none whitespace-nowrap bg-[#FE2C55] hover:bg-[#FE2C55]/90 text-white p-3 w-12 h-12 flex items-center justify-center">
+                <span class="w-6 h-6 flex items-center justify-center">
+                    <i class="ri-book-open-fill ri-lg"></i>
+                </span>
+            </a>
+        </div>
+    </div>
+
+    <!-- 返回顶部按钮 -->
+    <button id="backToTop" class="fixed right-6 bottom-6 minecraft-btn !rounded-button whitespace-nowrap bg-primary text-white p-3 w-12 h-12 flex items-center justify-center hidden" aria-label="返回顶部">
+        <span class="w-6 h-6 flex items-center justify-center">
+            <i class="ri-arrow-up-line ri-lg"></i>
+        </span>
+    </button>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // 自定义下拉菜单
+            const customSelects = document.querySelectorAll('.custom-select');
+            customSelects.forEach(select => {
+                const selectBtn = select.querySelector('button');
+                const selectItems = select.querySelector('.select-items');
+                
+                selectBtn.addEventListener('click', function() {
+                    selectItems.classList.toggle('select-hide');
+                });
+                
+                const items = selectItems.querySelectorAll('div');
+                items.forEach(item => {
+                    item.addEventListener('click', function() {
+                        selectBtn.querySelector('span:first-child').textContent = this.textContent;
+                        selectItems.classList.add('select-hide');
+                    });
+                });
+                
+                document.addEventListener('click', function(e) {
+                    if (!select.contains(e.target)) {
+                        selectItems.classList.add('select-hide');
+                    }
+                });
+            });
+
+            // 返回顶部按钮
+            const backToTopBtn = document.getElementById('backToTop');
+            if (backToTopBtn) {
+                window.addEventListener('scroll', function() {
+                    if (window.pageYOffset > 300) {
+                        backToTopBtn.classList.remove('hidden');
+                    } else {
+                        backToTopBtn.classList.add('hidden');
+                    }
+                });
+                
+                backToTopBtn.addEventListener('click', function() {
+                    window.scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
+                    });
+                });
+            }
+
+            // 移动端菜单
+            const menuBtn = document.querySelector('nav .md\\:hidden button');
+            const mobileMenu = document.querySelector('nav .md\\:hidden + div');
+            if (menuBtn && mobileMenu) {
+                menuBtn.addEventListener('click', function() {
+                    mobileMenu.classList.toggle('hidden');
+                });
+            }
+        });
+    </script>
+</body>
+</html>
